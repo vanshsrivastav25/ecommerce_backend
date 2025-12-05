@@ -39,7 +39,7 @@ class ProductController extends Controller
     {
         $products = Product::orderBy('created_at', 'DESC')
             ->where('status', 1);
-            
+
         // Filter product by category
         if (!empty($request->category)) {
             $catArray = explode(',', $request->category);
@@ -79,6 +79,23 @@ class ProductController extends Controller
         return response()->json([
             'status' => 200,
             'data' => $brands
+        ], 200);
+    }
+
+    public function getProduct($id)
+    {
+        $product = Product::with('product_images', 'product_sizes.size')->find($id);
+
+        if ($product == null) {
+            return response()->json([
+                'status' => 400,
+                'message' => "Product not found"
+            ], 400);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $product
         ], 200);
     }
 }
