@@ -278,7 +278,7 @@ class ProductController extends Controller
             ], 404);
         }
 
-        $product->image = $request->image; // file name
+        $product->image = $request->image;
         $product->save();
 
         return response()->json([
