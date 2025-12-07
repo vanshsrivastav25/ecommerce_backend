@@ -27,6 +27,7 @@ Route::get('get-brands', [FrontProductController::class, 'getBrands']);
 Route::group(['middleware' => ['auth:sanctum', 'checkUserRole']], function () {
 
     Route::post('save-order', [OrderController::class, 'saveOrder']);
+    Route::get('get-order-details/{id}', [AccountController::class, 'getOrderDetails']);
 });
 
 // Route::get('/user', function (Request $request) {
