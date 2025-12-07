@@ -6,10 +6,16 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SizeController;
 use App\Http\Controllers\admin\TempImageController;
+use App\Http\Controllers\front\AccountController;
 use App\Http\Controllers\front\ProductController as FrontProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/admin/Login', [AuthController::class, 'authenticate']);
+Route::post('/admin/login', [AuthController::class, 'authenticate']);
+
+// Customer register
+Route::post('register', [AccountController::class, 'register']);
+Route::post('login', [AccountController::class, 'authenticate']);
+
 Route::get('get-latest-products', [FrontProductController::class, 'latestProduct']);
 Route::get('get-featured-products', [FrontProductController::class, 'featuredProduct']);
 Route::get('get-products', [FrontProductController::class, 'getProducts']);
