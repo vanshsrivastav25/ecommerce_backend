@@ -100,12 +100,77 @@ class AccountController extends Controller
         }
     }
 
-    public function getOrders (Request $request) {
+    public function getOrders(Request $request)
+    {
         $orders = Order::where('user_id', $request->user()->id)->get();
 
         return response()->json([
+            'status' => 200,
+            'data' => $orders
+        ], 200);
+    }
+
+    public function updateProfile(Request $request)
+    {
+
+        $user = User::find(Auth::user()->id);
+
+        if ($user == null) {
+            return response()->json([
+                'status' => 404,
+                'data' => [],
+                'message' => "User not found."
+            ], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $request->user()->id . ',id',
+            'city' => 'required|max:100',
+            'state' => 'required|max:100',
+            'zip' => 'required|max:100',
+            'mobile' => 'required|max:100',
+            'address' => 'required|max:100',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->city = $request->city;
+        $user->state = $request->state;
+        $user->zip = $request->zip;
+        $user->mobile = $request->mobile;
+        $user->address = $request->address;
+        $user->save();
+
+        return response()->json([
+            'status' => 200,
+            'data' => $user,
+            'message' => "Profile updated successfully."
+        ], 200);
+    }
+
+    public function getAccountDetails(Request $request)
+    {
+        $user = User::find($request->user()->id);
+
+        if ($user == null) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'User not found.',
+                'data' => []
+            ], 404);
+        } else {
+             return response()->json([
                 'status' => 200,
-                'data' => $orders
+                'data' => $user
             ], 200);
+        }
     }
 }
