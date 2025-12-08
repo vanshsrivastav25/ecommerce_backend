@@ -45,6 +45,8 @@ Route::group(['middleware' => ['auth:sanctum', 'checkAdminRole']], function () {
     Route::post('save-product-image', [ProductController::class, 'saveProductImage']);
     Route::post('change-product-default-image', [ProductController::class, 'updateDefaultImage']);
     Route::delete('delete-product-image/{id}', [ProductController::class, 'deleteProductImage']);
+
     Route::get('orders', [AdminOrderController::class, 'index']);
     Route::get('orders/{id}', [AdminOrderController::class, 'detail']);
+    Route::post('update-order/{id}', [AdminOrderController::class, 'updateOrder']);
 });
